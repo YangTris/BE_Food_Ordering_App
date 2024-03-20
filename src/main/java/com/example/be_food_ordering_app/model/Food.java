@@ -1,10 +1,12 @@
-package com.example.be_food_ordering_app;
+package com.example.be_food_ordering_app.model;
+
+import java.util.Date;
 
 public class Food {
-
     private String id;
     private String name;
     private String description;
+    private Date timestamp;
 
     public Food() {
     }
@@ -44,4 +46,11 @@ public class Food {
         this.id = id;
     }
 
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
 }

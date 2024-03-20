@@ -1,4 +1,4 @@
-package com.example.be_food_ordering_app;
+package com.example.be_food_ordering_app.data;
 
 import java.io.FileInputStream;
 
@@ -19,6 +19,7 @@ public class FirebaseInitialize {
 
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    // .setDatabaseUrl("https://food-ordering-app-63b1a.firebaseio.com")
                     .build();
 
             FirebaseApp.initializeApp(options);
