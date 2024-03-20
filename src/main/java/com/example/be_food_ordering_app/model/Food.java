@@ -6,6 +6,7 @@ public class Food {
     private String id;
     private String name;
     private String description;
+    // timestamp
     private Date timestamp;
 
     public Food() {
