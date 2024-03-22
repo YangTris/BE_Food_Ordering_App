@@ -21,36 +21,9 @@ public class FoodController {
     @Autowired
     FoodService foodService;
 
-    @PostMapping("/food")
-    public ResponseEntity<String> createFood(@RequestBody Food food) throws Exception {
-        return ResponseEntity.ok(foodService.saveFood(food));
-    }
-
-    // @PostMapping("/food")
-    // public String createFood(@RequestBody Food food) throws Exception {
-    // // TODO: process POST request
-    // return foodService.saveFood(food);
-    // }
-
     @GetMapping("/food")
     public ResponseEntity<List<Food>> getAllFoods() throws Exception {
         return ResponseEntity.ok(foodService.getAllFoods());
-    }
-
-    // @DeleteMapping("/food/{id}")
-    // public ResponseEntity<Void> deleteFood(@PathVariable String id) {
-    // foodService.deleteFood(id);
-    // return ResponseEntity.ok().build();
-    // }
-
-    @DeleteMapping("/food/{id}")
-    public void deleteFood(@PathVariable String id) {
-        foodService.deleteFood(id);
-    }
-
-    @PutMapping("/food/{id}")
-    public ResponseEntity<String> updateFood(@PathVariable String id, Food food) throws Exception {
-        return ResponseEntity.ok(foodService.updateFood(id, food));
     }
 
     @GetMapping("/food/{id}")
@@ -58,4 +31,18 @@ public class FoodController {
         return ResponseEntity.ok(foodService.getFoodDetails(id));
     }
 
+    @PostMapping("/food")
+    public ResponseEntity<String> createFood(@RequestBody Food food) throws Exception {
+        return ResponseEntity.ok(foodService.saveFood(food));
+    }
+
+    @PutMapping("/food/{id}")
+    public ResponseEntity<String> updateFood(@PathVariable String id, @RequestBody Food food) throws Exception {
+        return ResponseEntity.ok(foodService.updateFood(id, food));
+    }
+
+    @DeleteMapping("/food/{id}")
+    public void deleteFood(@PathVariable String id) {
+        foodService.deleteFood(id);
+    }
 }

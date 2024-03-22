@@ -49,10 +49,7 @@ public class FoodService {
     public String updateFood(String id, Food food) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("foods").document(id);
-        // ApiFuture<WriteResult> result = docRef.update(
-        // "name", food.getName(),
-        // "description", food.getDescription(),
-        // "timestamp", FieldValue.serverTimestamp());
+        food.setId(docRef.getId());
         ApiFuture<WriteResult> result = docRef.set(food);
         ApiFuture<WriteResult> writeResult = docRef.update("timestamp", FieldValue.serverTimestamp());
 
