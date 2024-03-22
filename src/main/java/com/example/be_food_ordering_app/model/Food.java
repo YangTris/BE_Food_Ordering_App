@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class Food {
     private String id;
+    private String category;
+    private double price;
     private String name;
     private String description;
     private Date timestamp;
@@ -12,8 +14,11 @@ public class Food {
     public Food() {
     }
 
-    public Food(String id, String name, String description, Date timestamp, String imgURl) {
+    public Food(String id, String category, double price, String name, String description, Date timestamp,
+            String imgURl) {
         this.id = id;
+        this.category = category;
+        this.price = price;
         this.name = name;
         this.description = description;
         this.timestamp = timestamp;
@@ -64,4 +69,21 @@ public class Food {
     public void setImgURl(String imgURl) {
         this.imgURl = imgURl;
     }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
 }
