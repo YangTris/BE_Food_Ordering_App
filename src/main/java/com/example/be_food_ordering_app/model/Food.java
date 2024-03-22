@@ -7,14 +7,17 @@ public class Food {
     private String name;
     private String description;
     private Date timestamp;
+    private String imgURl;
 
     public Food() {
     }
 
-    public Food(String id, String name, String description) {
+    public Food(String id, String name, String description, Date timestamp, String imgURl) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.timestamp = timestamp;
+        this.imgURl = imgURl;
     }
 
     public String getName() {
@@ -52,5 +55,13 @@ public class Food {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getImgURl() {
+        return imgURl;
+    }
+
+    public void setImgURl(String imgURl) {
+        this.imgURl = imgURl;
     }
 }
