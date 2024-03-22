@@ -3,7 +3,7 @@ package com.example.be_food_ordering_app.model;
 public class User {
     private String userId;
     private String name;
-    private int roleId;
+    private Role roleId;
     private String address;
     private String phone;
     private String email;
@@ -12,7 +12,7 @@ public class User {
     public User() {
     }
 
-    public User(String userId, String name, int roleId, String address, String phone, String email,
+    public User(String userId, String name, Role roleId, String address, String phone, String email,
             String password) {
         this.userId = userId;
         this.name = name;
@@ -71,11 +71,11 @@ public class User {
         this.password = password;
     }
 
-    public int getRoleId() {
+    public Role getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(int roleId) {
+    public void setRoleId(Role roleId) {
         this.roleId = roleId;
     }
 
