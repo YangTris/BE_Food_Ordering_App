@@ -31,6 +31,7 @@ public class FoodController {
         return ResponseEntity.ok(foodService.getFoodDetails(id));
     }
 
+
     @PostMapping("/food")
     public ResponseEntity<String> createFood(@RequestBody Food food) throws Exception {
         return ResponseEntity.ok(foodService.saveFood(food));
@@ -45,4 +46,6 @@ public class FoodController {
     public void deleteFood(@PathVariable String id) {
         foodService.deleteFood(id);
     }
+
+
 }

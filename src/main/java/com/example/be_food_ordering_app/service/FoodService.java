@@ -15,7 +15,7 @@ import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
-import com.google.cloud.firestore.Query; // Import the Query class
+import com.google.cloud.firestore.Query;
 
 @Service
 public class FoodService {
