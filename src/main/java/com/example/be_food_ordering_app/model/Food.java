@@ -9,20 +9,20 @@ public class Food {
     private String name;
     private String description;
     private Date timestamp;
-    private String imgURl;
-
-    public Food() {
-    }
+    private String imgURL;
 
     public Food(String id, String category, double price, String name, String description, Date timestamp,
-            String imgURl) {
+            String imgURL) {
         this.id = id;
         this.category = category;
         this.price = price;
         this.name = name;
         this.description = description;
         this.timestamp = timestamp;
-        this.imgURl = imgURl;
+        this.imgURL = imgURL;
+    }
+
+    public Food() {
     }
 
     public String getName() {
@@ -62,14 +62,6 @@ public class Food {
         this.timestamp = timestamp;
     }
 
-    public String getImgURl() {
-        return imgURl;
-    }
-
-    public void setImgURl(String imgURl) {
-        this.imgURl = imgURl;
-    }
-
     public String getCategory() {
         return category;
     }
@@ -84,6 +76,14 @@ public class Food {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getImgURL() {
+        return imgURL;
+    }
+
+    public void setImgURL(String imgURL) {
+        this.imgURL = imgURL;
     }
 
 }
