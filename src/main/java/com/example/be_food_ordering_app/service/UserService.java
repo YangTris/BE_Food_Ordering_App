@@ -23,6 +23,7 @@ public class UserService {
         ApiFuture<QuerySnapshot> future = db.collection("users").get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         List<User> users = documents.stream().map(document -> document.toObject(User.class)).toList();
+
         return users;
     }
 
@@ -42,9 +43,9 @@ public class UserService {
                 .whereEqualTo("password", user.getPassword()).get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         if (documents.isEmpty()) {
-            return null;
+            return "Wrong phone number or password";
         } else {
-            return documents.get(0).getId();
+            return "Welcome " + documents.get(0).get("name") + " !";
         }
     }
 
