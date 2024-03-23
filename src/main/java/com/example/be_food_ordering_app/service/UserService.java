@@ -29,11 +29,16 @@ public class UserService {
 
     public String saveCustomer(User user) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
-        DocumentReference docRef = db.collection("users").document();
-        user.setUserId(docRef.getId());
-        ApiFuture<WriteResult> result = docRef.set(user);
-
-        return "Saved user with ID: " + docRef.getId();
+        ApiFuture<QuerySnapshot> future = db.collection("users").whereEqualTo("phone", user.getPhone()).get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        if (documents.isEmpty()) {
+            DocumentReference docRef = db.collection("users").document();
+            user.setUserId(docRef.getId());
+            ApiFuture<WriteResult> result = docRef.set(user);
+            return "Saved user with ID: " + docRef.getId();
+        } else {
+            return "Phone number already exists";
+        }
     }
 
     // login user by phoneNumber and password
