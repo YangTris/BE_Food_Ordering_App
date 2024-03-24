@@ -32,9 +32,9 @@ public class CartController {
         return ResponseEntity.ok(cartService.getTotalQuantity(id));
     }
 
-    @PostMapping("/cart")
-    public ResponseEntity<String> addFoodToCart(@RequestBody Cart cart) throws Exception {
-        return ResponseEntity.ok(cartService.addFoodToCart(cart));
+    @PostMapping("/cart/{userId}")
+    public ResponseEntity<String> addFoodToCart(@PathVariable String userId, @RequestBody Cart cart) throws Exception {
+        return ResponseEntity.ok(cartService.addFoodToCart(userId, cart));
     }
 
     @DeleteMapping("/cart/{id}")

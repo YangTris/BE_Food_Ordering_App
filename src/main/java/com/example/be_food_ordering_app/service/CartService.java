@@ -30,7 +30,7 @@ public class CartService {
     }
 
     // Add Food to cart by id
-    public String addFoodToCart(Cart cart)
+    public String addFoodToCart(String userId, Cart cart)
             throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
 
@@ -44,7 +44,7 @@ public class CartService {
         // }
         // cart.setPrice(cart.getQuantity() * food.getPrice());
 
-        DocumentReference docRef = db.collection("carts").document();
+        DocumentReference docRef = db.collection("carts").document(userId);
         cart.setCartId(docRef.getId());
         ApiFuture<WriteResult> result = docRef.set(cart);
 
