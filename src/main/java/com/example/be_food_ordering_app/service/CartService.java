@@ -3,6 +3,8 @@ package com.example.be_food_ordering_app.service;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import org.springframework.stereotype.Service;
+
 import com.example.be_food_ordering_app.model.Cart;
 import com.example.be_food_ordering_app.model.Food;
 import com.example.be_food_ordering_app.model.User;
@@ -15,6 +17,7 @@ import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 
+@Service
 public class CartService {
 
     // check if food exists in cart
