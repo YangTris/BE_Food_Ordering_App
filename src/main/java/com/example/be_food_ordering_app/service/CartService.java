@@ -30,28 +30,26 @@ public class CartService {
     }
 
     // Add Food to cart by id
-    public String addFoodToCart(String foodId, String userId, Cart cart)
+    public String addFoodToCart(Cart cart)
             throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
-        Food food = db.collection("foods").document(foodId).get().get().toObject(Food.class);
-        User user = db.collection("users").document(userId).get().get().toObject(User.class);
 
         // set cartId == userId
-        cart.setCartId(user.getUserId());
-        cart.setFoodId(food);
-        cart.setUserId(user);
-        if (!checkFoodExists(foodId, userId)) {
-            cart.setQuantity(1);
-        } else {
-            cart.setQuantity(cart.getQuantity() + 1);
-        }
-        cart.setPrice(cart.getQuantity() * food.getPrice());
 
-        DocumentReference docRef = db.collection("carts").document(cart.getCartId());
+        // cart.setQuantity(1);
+        // if (!checkFoodExists(foodId, userId)) {
+        // cart.setQuantity(1);
+        // } else {
+        // cart.setQuantity(cart.getQuantity() + 1);
+        // }
+        // cart.setPrice(cart.getQuantity() * food.getPrice());
 
+        DocumentReference docRef = db.collection("carts").document();
+        cart.setCartId(docRef.getId());
         ApiFuture<WriteResult> result = docRef.set(cart);
 
-        return "Added " + food.getName() + " to " + user.getName() + " cart";
+        return result.get().getUpdateTime().toString();
+        // return "Added " + food.getName() + " to " + user.getName() + " cart";
     }
 
     // delete cart item by cartId

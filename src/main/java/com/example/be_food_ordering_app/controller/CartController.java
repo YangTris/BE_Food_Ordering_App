@@ -33,8 +33,8 @@ public class CartController {
     }
 
     @PostMapping("/cart")
-    public ResponseEntity<String> addFoodToCart(String foodId, String userId, @RequestBody Cart cart) throws Exception {
-        return ResponseEntity.ok(cartService.addFoodToCart(foodId, userId, cart));
+    public ResponseEntity<String> addFoodToCart(@RequestBody Cart cart) throws Exception {
+        return ResponseEntity.ok(cartService.addFoodToCart(cart));
     }
 
     @DeleteMapping("/cart/{id}")
