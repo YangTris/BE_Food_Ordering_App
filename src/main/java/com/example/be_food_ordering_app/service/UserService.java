@@ -27,18 +27,32 @@ public class UserService {
         return users;
     }
 
-    public String saveCustomer(User user) throws InterruptedException, ExecutionException {
+    // check regex for phone number
+    public boolean checkPhoneNumber(String phone) {
+        String pattern = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}";
+        return phone.matches(pattern);
+    }
+
+    public boolean checkUniquePhoneNumber(String phone) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = db.collection("users").whereEqualTo("phone", user.getPhone()).get();
+        ApiFuture<QuerySnapshot> future = db.collection("users").whereEqualTo("phone", phone).get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-        if (documents.isEmpty()) {
-            DocumentReference docRef = db.collection("users").document();
-            user.setUserId(docRef.getId());
-            ApiFuture<WriteResult> result = docRef.set(user);
-            return "Saved user with ID: " + docRef.getId();
-        } else {
+        return documents.isEmpty();
+    }
+
+    public String saveCustomer(User user) throws InterruptedException, ExecutionException {
+        if (!checkPhoneNumber(user.getPhone())) {
+            return "Invalid phone number";
+        }
+        if (!checkUniquePhoneNumber(user.getPhone())) {
             return "Phone number already exists";
         }
+        Firestore db = FirestoreClient.getFirestore();
+        DocumentReference docRef = db.collection("users").document();
+        user.setUserId(docRef.getId());
+        ApiFuture<WriteResult> result = docRef.set(user);
+
+        return "Saved user with ID: " + docRef.getId();
     }
 
     // login user by phoneNumber and password
