@@ -82,7 +82,7 @@ public class CartService {
     }
 
     // delete cart item by foodId and userId
-    public void deleteCartItemByFoodId(String foodId, String userId) throws InterruptedException, ExecutionException {
+    public void deleteCartItemByFoodId(String userId, String foodId) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = db.collection("carts").whereEqualTo("foodId", foodId)
                 .whereEqualTo("userId", userId).get();
