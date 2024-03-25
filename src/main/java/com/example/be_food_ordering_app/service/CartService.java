@@ -60,10 +60,10 @@ public class CartService {
         return result.get().getUpdateTime().toString();
     }
 
-    // get total price of cart items by cartId
-    public double getTotalPrice(String id) throws InterruptedException, ExecutionException {
+    // get total price of cart items by userId
+    public double getTotalPrice(String userId) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = db.collection("carts").whereEqualTo("cartId", id).get();
+        ApiFuture<QuerySnapshot> future = db.collection("carts").whereEqualTo("userId", userId).get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         double totalPrice = 0;
         for (QueryDocumentSnapshot document : documents) {
@@ -72,10 +72,10 @@ public class CartService {
         return totalPrice;
     }
 
-    // get total quantity of cart items by cartId
-    public int getTotalQuantity(String id) throws InterruptedException, ExecutionException {
+    // get total quantity of cart items by userId
+    public int getTotalQuantity(String userId) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = db.collection("carts").whereEqualTo("cartId", id).get();
+        ApiFuture<QuerySnapshot> future = db.collection("carts").whereEqualTo("userId", userId).get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         int totalQuantity = 0;
         for (QueryDocumentSnapshot document : documents) {
