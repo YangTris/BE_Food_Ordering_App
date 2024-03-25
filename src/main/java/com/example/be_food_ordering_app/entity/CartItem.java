@@ -1,23 +1,19 @@
-package com.example.be_food_ordering_app.model;
+package com.example.be_food_ordering_app.entity;
 
-public class Cart {
+public class CartItem {
     private String cartId;
-    // private User userId;
-    // private Food foodId;
     private String userId;
     private String foodId;
     private int quantity;
     private double price;
 
-    public Cart() {
+    public CartItem() {
     }
 
-    public Cart(String cartId, String userId, String foodId, int quantity, double price) {
-        this.cartId = cartId;
+    public CartItem(String userId, String foodId, int quantity) {
         this.userId = userId;
         this.foodId = foodId;
         this.quantity = quantity;
-        this.price = price;
     }
 
     public String getCartId() {

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.be_food_ordering_app.model.User;
+import com.example.be_food_ordering_app.entity.User;
 import com.example.be_food_ordering_app.service.UserService;
 
 @RestController

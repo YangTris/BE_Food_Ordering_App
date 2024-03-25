@@ -1,4 +1,4 @@
-package com.example.be_food_ordering_app.model;
+package com.example.be_food_ordering_app.entity;
 
 public class User {
     private String userId;

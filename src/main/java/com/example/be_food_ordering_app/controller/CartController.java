@@ -1,5 +1,7 @@
 package com.example.be_food_ordering_app.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,8 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.be_food_ordering_app.model.Cart;
+import com.example.be_food_ordering_app.entity.CartItem;
 import com.example.be_food_ordering_app.service.CartService;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 public class CartController {
@@ -18,7 +21,7 @@ public class CartController {
     CartService cartService;
 
     @GetMapping("/cart/{id}")
-    public ResponseEntity<Cart> getAllCartItems(@PathVariable String id) throws Exception {
+    public ResponseEntity<List<CartItem>> getAllCartItems(@PathVariable String id) throws Exception {
         return ResponseEntity.ok(cartService.getAllCartItem(id));
     }
 
@@ -32,19 +35,32 @@ public class CartController {
         return ResponseEntity.ok(cartService.getTotalQuantity(id));
     }
 
-    @PostMapping("/cart/{userId}")
-    public ResponseEntity<String> addFoodToCart(@PathVariable String userId, @RequestBody Cart cart) throws Exception {
-        return ResponseEntity.ok(cartService.addFoodToCart(userId, cart));
+    @GetMapping("/cart/{userId}/{foodId}")
+    public ResponseEntity<CartItem> checkFoodExists(@PathVariable String userId, @PathVariable String foodId)
+            throws Exception {
+        return ResponseEntity.ok(cartService.getCartId(userId, foodId));
     }
 
-    @DeleteMapping("/cart/{id}")
-    public void deleteCartItem(@PathVariable String id) {
-        cartService.deleteAllCartItem(id);
+    @PostMapping("/cart")
+    public ResponseEntity<String> addFoodToCart(@RequestBody CartItem cart)
+            throws Exception {
+        return ResponseEntity.ok(cartService.addFoodToCart(cart));
     }
 
-    @DeleteMapping("/cart/{userId}/{foodId}")
-    public void deleteCartItem(@PathVariable String userId, @PathVariable String foodId) throws Exception {
-        cartService.deleteCartItemByFoodId(userId, foodId);
+    @PutMapping("/cart")
+    public ResponseEntity<String> updateFoodCart(@RequestBody CartItem cart)
+            throws Exception {
+        return ResponseEntity.ok(cartService.updateCarByFoodId(cart));
+    }
+
+    @DeleteMapping("/cartItem/{cartId}")
+    public void deleteCartItem(@PathVariable String cartId) {
+        cartService.deleteCartItem(cartId);
+    }
+
+    @DeleteMapping("/cart/{userId}")
+    public void clearCart(@PathVariable String userId) throws Exception {
+        cartService.clearCartByUserId(userId);
     }
 
 }
