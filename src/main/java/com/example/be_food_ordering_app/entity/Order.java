@@ -1,17 +1,20 @@
 package com.example.be_food_ordering_app.entity;
 
+import java.util.Date;
+
 public class Order {
     private String orderId;
-    private User userId;
-    private User shipperId;
-    private String orderDate;
+    private String userId;
+    private String shipperId;
+    private Date orderDate;
     private String orderStatus;
     private String orderTotal;
 
     public Order() {
     }
 
-    public Order(String orderId, User userId, User shipperId, String orderDate, String orderStatus, String orderTotal) {
+    public Order(String orderId, String userId, String shipperId, Date orderDate, String orderStatus,
+            String orderTotal) {
         this.orderId = orderId;
         this.userId = userId;
         this.shipperId = shipperId;
@@ -28,27 +31,27 @@ public class Order {
         this.orderId = orderId;
     }
 
-    public User getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(User userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public User getShipperId() {
+    public String getShipperId() {
         return shipperId;
     }
 
-    public void setShipperId(User shipperId) {
+    public void setShipperId(String shipperId) {
         this.shipperId = shipperId;
     }
 
-    public String getOrderDate() {
+    public Date getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(String orderDate) {
+    public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
     }
 
