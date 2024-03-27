@@ -1,35 +1,21 @@
 package com.example.be_food_ordering_app.entity;
 
 public class CartItem {
-    private String cartId;
-    private String userId;
     private String foodId;
+    private String foodName;
     private int quantity;
     private double price;
+    private double total;
 
     public CartItem() {
     }
 
-    public CartItem(String userId, String foodId, int quantity) {
-        this.userId = userId;
+    public CartItem(String foodId, String foodName, int quantity, double price, double total) {
         this.foodId = foodId;
+        this.foodName = foodName;
         this.quantity = quantity;
-    }
-
-    public String getCartId() {
-        return cartId;
-    }
-
-    public void setCartId(String cartId) {
-        this.cartId = cartId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+        this.price = price;
+        this.total = total;
     }
 
     public String getFoodId() {
@@ -54,6 +40,22 @@ public class CartItem {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public String getFoodName() {
+        return foodName;
+    }
+
+    public void setFoodName(String foodName) {
+        this.foodName = foodName;
     }
 
 }
