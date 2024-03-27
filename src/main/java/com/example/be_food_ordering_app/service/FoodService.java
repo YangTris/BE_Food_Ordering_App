@@ -41,9 +41,11 @@ public class FoodService {
         return foods;
     }
 
-    public void deleteFood(String id) {
+    public String deleteFood(String id) {
         Firestore db = FirestoreClient.getFirestore();
         db.collection("foods").document(id).delete();
+
+        return "Document with ID " + id + " has been deleted!";
     }
 
     public String updateFood(String id, Food food) throws InterruptedException, ExecutionException {

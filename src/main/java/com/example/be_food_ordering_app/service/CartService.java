@@ -84,18 +84,22 @@ public class CartService {
         return totalQuantity;
     }
 
-    public void deleteCartItem(String cartId) {
+    public String deleteCartItem(String cartId) {
         Firestore db = FirestoreClient.getFirestore();
         db.collection("carts").document(cartId).delete();
+
+        return "Document with ID " + cartId + " has been deleted!";
     }
 
-    public void clearCartByUserId(String userId) throws InterruptedException, ExecutionException {
+    public String clearCartByUserId(String userId) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = db.collection("carts").whereEqualTo("userId", userId).get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         for (QueryDocumentSnapshot document : documents) {
             db.collection("carts").document(document.getId()).delete();
         }
+
+        return "Cart of user with ID " + userId + " has been cleared!";
     }
 
 }

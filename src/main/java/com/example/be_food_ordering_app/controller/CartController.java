@@ -54,13 +54,13 @@ public class CartController {
     }
 
     @DeleteMapping("/cartItem/{cartId}")
-    public void deleteCartItem(@PathVariable String cartId) {
-        cartService.deleteCartItem(cartId);
+    public ResponseEntity<String> deleteCartItem(@PathVariable String cartId) {
+        return ResponseEntity.ok(cartService.deleteCartItem(cartId));
     }
 
     @DeleteMapping("/cart/{userId}")
-    public void clearCart(@PathVariable String userId) throws Exception {
-        cartService.clearCartByUserId(userId);
+    public ResponseEntity<String> clearCart(@PathVariable String userId) throws Exception {
+        return ResponseEntity.ok(cartService.clearCartByUserId(userId));
     }
 
 }
