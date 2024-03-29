@@ -26,49 +26,21 @@ public class CartController {
         return ResponseEntity.ok(cartService.getAllCartItem(id));
     }
 
-    @GetMapping("/cart/{userId}")
+    @GetMapping("/checkCartExist/{userId}")
     public ResponseEntity<List<CartItem>> checkCartExist(@PathVariable String userId) throws Exception {
         return ResponseEntity.ok(cartService.checkCartItemExists(userId));
+    }
+
+    @PostMapping("/cart/{cartId}")
+    public ResponseEntity<String> createCart(@PathVariable String cartId, @RequestBody CartItem cartItem)
+            throws Exception {
+        return ResponseEntity.ok(cartService.createCart(cartId, cartItem));
     }
 
     @PutMapping("/cart/{cartId}")
     public ResponseEntity<String> addFoodToCart(@PathVariable String cartId, @RequestBody CartItem cartItem)
             throws Exception {
         return ResponseEntity.ok(cartService.addToCart(cartId, cartItem));
-    }
-
-    @PostMapping("/cart")
-    public ResponseEntity<String> createCart(@PathVariable String cartId, @RequestBody CartItem cartItem)
-            throws Exception {
-        return ResponseEntity.ok(cartService.createCart(cartId, cartItem));
-    }
-
-    // @PostMapping("/cart")
-    // public ResponseEntity<String> addFoodToCart(@RequestBody CartItem cart)
-    // throws Exception {
-    // return ResponseEntity.ok(cartService.addFoodToCart(cart));
-    // }
-
-    // @PutMapping("/cart")
-    // public ResponseEntity<String> updateFoodCart(@RequestBody CartItem cart)
-    // throws Exception {
-    // return ResponseEntity.ok(cartService.updateCarByFoodId(cart));
-    // }
-
-    @GetMapping("/cart/{id}/totalPrice")
-    public ResponseEntity<Double> getTotalPrice(@PathVariable String id) throws Exception {
-        return ResponseEntity.ok(cartService.getTotalPrice(id));
-    }
-
-    @GetMapping("/cart/{id}/totalQuantity")
-    public ResponseEntity<Integer> getTotalQuantity(@PathVariable String id) throws Exception {
-        return ResponseEntity.ok(cartService.getTotalQuantity(id));
-    }
-
-    @GetMapping("/cart/{userId}/{foodId}")
-    public ResponseEntity<CartItem> checkFoodExists(@PathVariable String userId, @PathVariable String foodId)
-            throws Exception {
-        return ResponseEntity.ok(cartService.getCartId(userId, foodId));
     }
 
     @DeleteMapping("/cartItem/{cartId}")

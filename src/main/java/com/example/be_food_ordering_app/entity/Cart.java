@@ -5,13 +5,13 @@ import java.util.List;
 public class Cart {
     private String cartId;
     private String userId;
-    private String totalPrice;
+    private double totalPrice;
     private List<CartItem> cartItems;
 
     public Cart() {
     }
 
-    public Cart(String cartId, String userId, String totalPrice, List<CartItem> cartItems) {
+    public Cart(String cartId, String userId, double totalPrice, List<CartItem> cartItems) {
         this.cartId = cartId;
         this.userId = userId;
         this.totalPrice = totalPrice;
@@ -34,12 +34,12 @@ public class Cart {
         this.userId = userId;
     }
 
-    public String getTotalPrice() {
-        return totalPrice;
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
-    public void setTotalPrice(String totalPrice) {
-        this.totalPrice = totalPrice;
+    public double getTotalPrice() {
+        return totalPrice;
     }
 
     public List<CartItem> getCartItems() {

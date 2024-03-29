@@ -35,6 +35,11 @@ public class CartService {
         cart.setCartId(cartId);
         cart.setUserId(cartId);
         cart.setCartItems(List.of(newItem));
+        cart.getCartItems().forEach(item -> item.setTotal(item.getQuantity() * item.getPrice()));
+
+        double totalPrice = calculateTotalPrice(cart);
+        cart.setTotalPrice(totalPrice);
+
         ApiFuture<WriteResult> result = docRef.set(cart);
         return "Item added to cart successfully at: " + result.get().getUpdateTime();
 
@@ -52,6 +57,10 @@ public class CartService {
 
         List<CartItem> cartItems = existingCart.getCartItems();
         cartItems.add(newItem);
+        cartItems.forEach(item -> item.setTotal(item.getQuantity() * item.getPrice()));
+
+        double totalPrice = calculateTotalPrice(existingCart);
+        existingCart.setTotalPrice(totalPrice);
 
         existingCart.setCartItems(cartItems);
 
@@ -66,74 +75,25 @@ public class CartService {
         return documents.isEmpty() ? null : documents.get(0).toObject(Cart.class).getCartItems();
     }
 
-    // private double calculateTotalPrice(Cart cart) {
-    // double totalPrice = 0.0;
-    // for (CartItem item : cart.getCartItems()) {
-    // totalPrice += item.getTotal();
-    // }
-    // return totalPrice;
-    // }
-
-    // Add Food to cart by id
-
-    // public String addFoodToCart(CartItem cart)
-    // throws InterruptedException, ExecutionException {
-    // Firestore db = FirestoreClient.getFirestore();
-    // DocumentReference docRef = db.collection("carts").document();
-    // DocumentReference food = db.collection("foods").document(cart.getFoodId());
-    // cart.setCartId(docRef.getId());
-
-    // cart.setPrice(food.get().get().toObject(Food.class).getPrice() *
-    // cart.getQuantity());
-
-    // ApiFuture<WriteResult> result = docRef.set(cart);
-
-    // return result.get().getUpdateTime().toString();
-    // }
-
-    // public String updateCarByFoodId(CartItem cart)
-    // throws InterruptedException, ExecutionException {
-    // Firestore db = FirestoreClient.getFirestore();
-    // DocumentReference docRef = db.collection("carts").document(cart.getCartId());
-    // DocumentReference food = db.collection("foods").document(cart.getFoodId());
-    // cart.setQuantity(cart.getQuantity() +
-    // docRef.get().get().toObject(CartItem.class).getQuantity());
-    // cart.setPrice(food.get().get().toObject(Food.class).getPrice() *
-    // cart.getQuantity());
-    // ApiFuture<WriteResult> result = docRef.set(cart);
-    // return result.get().getUpdateTime().toString();
-    // }
-
-    // get total price of cart items by userId
-    public double getTotalPrice(String userId) throws InterruptedException, ExecutionException {
-        Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = db.collection("carts").whereEqualTo("userId", userId).get();
-        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-        double totalPrice = 0;
-        for (QueryDocumentSnapshot document : documents) {
-            totalPrice += document.toObject(CartItem.class).getPrice();
+    private double calculateTotalPrice(Cart cart) {
+        double totalPrice = 0.0;
+        for (CartItem item : cart.getCartItems()) {
+            totalPrice += item.getTotal();
         }
         return totalPrice;
     }
 
-    public CartItem getCartId(String userId, String foodId) throws InterruptedException, ExecutionException {
-        Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = db.collection("carts").whereEqualTo("userId", userId)
-                .whereEqualTo("foodId", foodId).get();
-        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-        return documents.isEmpty() ? null : documents.get(0).toObject(CartItem.class);
-    }
-
     // get total quantity of cart items by userId
-    public int getTotalQuantity(String userId) throws InterruptedException, ExecutionException {
+    public String getTotalQuantity(String id) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = db.collection("carts").whereEqualTo("userId", userId).get();
+        ApiFuture<QuerySnapshot> future = db.collection("carts").whereEqualTo("userId", id).get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         int totalQuantity = 0;
         for (QueryDocumentSnapshot document : documents) {
-            totalQuantity += document.toObject(CartItem.class).getQuantity();
+            Cart cart = document.toObject(Cart.class);
+            totalQuantity += cart.getCartItems().size();
         }
-        return totalQuantity;
+        return "Total quantity of cart items: " + totalQuantity;
     }
 
     public String deleteCartItem(String cartId) {
