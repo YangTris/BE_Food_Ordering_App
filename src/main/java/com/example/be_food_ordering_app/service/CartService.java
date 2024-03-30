@@ -47,24 +47,28 @@ public class CartService {
 
     public String addToCart(String cartId, CartItem newItem) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
-
-        DocumentReference cartRef = db.collection("carts").document(cartId);
-
-        ApiFuture<DocumentSnapshot> future = cartRef.get();
+        DocumentReference docRef = db.collection("carts").document(cartId);
+        ApiFuture<DocumentSnapshot> future = docRef.get();
         DocumentSnapshot document = future.get();
-
-        Cart existingCart = document.toObject(Cart.class);
-
-        List<CartItem> cartItems = existingCart.getCartItems();
-        cartItems.add(newItem);
-        cartItems.forEach(item -> item.setTotal(item.getQuantity() * item.getPrice()));
-
-        double totalPrice = calculateTotalPrice(existingCart);
-        existingCart.setTotalPrice(totalPrice);
-
-        existingCart.setCartItems(cartItems);
-
-        ApiFuture<WriteResult> writeResult = cartRef.set(existingCart);
+        Cart cart = document.toObject(Cart.class);
+        List<CartItem> cartItems = cart.getCartItems();
+        boolean isItemExists = false;
+        for (CartItem item : cartItems) {
+            if (item.getFoodId().equals(newItem.getFoodId())) {
+                item.setQuantity(item.getQuantity() + newItem.getQuantity());
+                item.setTotal(item.getQuantity() * item.getPrice());
+                isItemExists = true;
+                break;
+            }
+        }
+        if (!isItemExists) {
+            cartItems.add(newItem);
+            cartItems.forEach(item -> item.setTotal(item.getQuantity() * item.getPrice()));
+        }
+        cart.setCartItems(cartItems);
+        double totalPrice = calculateTotalPrice(cart);
+        cart.setTotalPrice(totalPrice);
+        ApiFuture<WriteResult> writeResult = docRef.set(cart);
         return "Item added to cart successfully at: " + writeResult.get().getUpdateTime();
     }
 
@@ -96,22 +100,35 @@ public class CartService {
         return "Total quantity of cart items: " + totalQuantity;
     }
 
-    public String deleteCartItem(String cartId) {
+    // delete cart item
+    public String deleteCartItem(String cartId, String itemId) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
-        db.collection("carts").document(cartId).delete();
-
-        return "Document with ID " + cartId + " has been deleted!";
+        DocumentReference docRef = db.collection("carts").document(cartId);
+        ApiFuture<DocumentSnapshot> future = docRef.get();
+        DocumentSnapshot document = future.get();
+        Cart cart = document.toObject(Cart.class);
+        List<CartItem> cartItems = cart.getCartItems();
+        for (CartItem item : cartItems) {
+            if (item.getFoodId().equals(itemId)) {
+                cartItems.remove(item);
+                break;
+            }
+        }
+        cart.setCartItems(cartItems);
+        double totalPrice = calculateTotalPrice(cart);
+        cart.setTotalPrice(totalPrice);
+        ApiFuture<WriteResult> writeResult = docRef.set(cart);
+        return "Item deleted from cart successfully at: " + writeResult.get().getUpdateTime();
     }
 
-    public String clearCartByUserId(String userId) throws InterruptedException, ExecutionException {
+    public String deleteCart(String userId) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = db.collection("carts").whereEqualTo("userId", userId).get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         for (QueryDocumentSnapshot document : documents) {
             db.collection("carts").document(document.getId()).delete();
         }
-
-        return "Cart of user with ID " + userId + " has been cleared!";
+        return "Cart cleared successfully";
     }
 
 }
