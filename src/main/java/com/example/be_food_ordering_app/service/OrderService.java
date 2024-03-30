@@ -1,0 +1,59 @@
+package com.example.be_food_ordering_app.service;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import org.springframework.stereotype.Service;
+
+import com.example.be_food_ordering_app.entity.Cart;
+import com.example.be_food_ordering_app.entity.Order;
+import com.example.be_food_ordering_app.entity.User;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.FieldValue;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.WriteResult;
+import com.google.firebase.cloud.FirestoreClient;
+
+@Service
+public class OrderService {
+    public String createOrder(Cart cart) throws InterruptedException, ExecutionException {
+        Firestore db = FirestoreClient.getFirestore();
+        DocumentReference docRef = db.collection("orders").document();
+
+        Order order = new Order();
+        order.setOrderId(docRef.getId());
+        order.setUserId(cart.getUserId());
+        order.setCart(cart);
+        order.setOrderTotal(cart.getTotalPrice());
+        order.setOrderStatus("Pending");
+        order.setPaymentMethod("VNPay");
+        order.setPaymentStatus("Pending");
+        order.setMerchantAdress("Cơ Sở chính SGU, 273 An Dương Vương, Phường 3, Quận 5, Thành phố Hồ Chí Minh");
+
+        ApiFuture<QuerySnapshot> future = db.collection("users").whereEqualTo("userId", cart.getUserId()).get();
+        order.setUserPhone(future.get().toObjects(User.class).get(0).getPhone());
+        order.setUserAddress(future.get().toObjects(User.class).get(0).getAddress());
+
+        ApiFuture<WriteResult> result = docRef.set(order);
+        ApiFuture<WriteResult> writeResult = docRef.update("orderDate", FieldValue.serverTimestamp());
+        return "Created order with ID: " + docRef.getId() + " at: " + result.get().getUpdateTime().toString();
+    }
+
+    //update shipperId and orderStatus
+
+    public Order getOrder(String orderId) throws InterruptedException, ExecutionException {
+        Firestore db = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = db.collection("orders").whereEqualTo("orderId", orderId).get();
+        return future.get().toObjects(Order.class).get(0);
+    }
+
+    // get all orders by userId
+    public List<Order> getOrderByUserId(String userId) throws InterruptedException, ExecutionException {
+        Firestore db = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = db.collection("orders").whereEqualTo("userId", userId).get();
+        return future.get().toObjects(Order.class);
+    }
+
+}
