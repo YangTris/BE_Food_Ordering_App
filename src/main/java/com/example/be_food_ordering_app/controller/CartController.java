@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.be_food_ordering_app.entity.Cart;
 import com.example.be_food_ordering_app.entity.CartItem;
-import com.example.be_food_ordering_app.entity.User;
 import com.example.be_food_ordering_app.service.CartService;
 import org.springframework.web.bind.annotation.PutMapping;
 

@@ -11,6 +11,7 @@ import com.example.be_food_ordering_app.entity.Cart;
 import com.example.be_food_ordering_app.entity.Order;
 import com.example.be_food_ordering_app.service.OrderService;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,11 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class OrderController {
     @Autowired
     OrderService orderService;
-
-    @PostMapping("/order")
-    public ResponseEntity<String> createOrder(@RequestBody Cart cart) throws InterruptedException, ExecutionException {
-        return ResponseEntity.ok(orderService.createOrder(cart));
-    }
 
     @GetMapping("/order/{orderId}")
     public ResponseEntity<Order> getOrder(@PathVariable String orderId)
@@ -36,4 +32,16 @@ public class OrderController {
             throws InterruptedException, ExecutionException {
         return ResponseEntity.ok(orderService.getOrderByUserId(userId));
     }
+
+    @PostMapping("/order")
+    public ResponseEntity<String> createOrder(@RequestBody Cart cart) throws InterruptedException, ExecutionException {
+        return ResponseEntity.ok(orderService.createOrder(cart));
+    }
+
+    @PutMapping("/order")
+    public ResponseEntity<String> updateShipperId(@RequestBody Order order)
+            throws InterruptedException, ExecutionException {
+        return ResponseEntity.ok(orderService.updateShipperId(order.getOrderId(), order.getShipperId()));
+    }
+
 }

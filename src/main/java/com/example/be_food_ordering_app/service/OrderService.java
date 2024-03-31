@@ -38,10 +38,16 @@ public class OrderService {
 
         ApiFuture<WriteResult> result = docRef.set(order);
         ApiFuture<WriteResult> writeResult = docRef.update("orderDate", FieldValue.serverTimestamp());
+        writeResult.get();
         return "Created order with ID: " + docRef.getId() + " at: " + result.get().getUpdateTime().toString();
     }
 
-    //update shipperId and orderStatus
+    public String updateShipperId(String orderId, String shipperId) throws InterruptedException, ExecutionException {
+        Firestore db = FirestoreClient.getFirestore();
+        DocumentReference docRef = db.collection("orders").document(orderId);
+        ApiFuture<WriteResult> writeResult = docRef.update("shipperId", shipperId, "orderStatus", "Shipping");
+        return "Update order with ID: " + orderId + " at: " + writeResult.get().getUpdateTime().toString();
+    }
 
     public Order getOrder(String orderId) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();

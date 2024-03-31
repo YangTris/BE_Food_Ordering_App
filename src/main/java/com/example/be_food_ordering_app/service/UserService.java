@@ -85,7 +85,6 @@ public class UserService {
         DocumentReference docRef = db.collection("users").document(id);
         user.setUserId(docRef.getId());
         ApiFuture<WriteResult> result = docRef.set(user);
-
         return "Updated user with ID: " + docRef.getId();
     }
 
