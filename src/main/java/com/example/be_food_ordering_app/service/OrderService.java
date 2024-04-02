@@ -30,7 +30,7 @@ public class OrderService {
         order.setOrderStatus("Pending");
         order.setPaymentMethod("VNPay");
         order.setPaymentStatus("Pending");
-        order.setMerchantAdress("Cơ Sở chính SGU, 273 An Dương Vương, Phường 3, Quận 5, Thành phố Hồ Chí Minh");
+        order.setMerchantAdress("273 An Dương Vương, Phường 3, Quận 5, Thành phố Hồ Chí Minh");
 
         ApiFuture<QuerySnapshot> future = db.collection("users").whereEqualTo("userId", cart.getUserId()).get();
         order.setUserPhone(future.get().toObjects(User.class).get(0).getPhone());
@@ -46,6 +46,14 @@ public class OrderService {
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("orders").document(orderId);
         ApiFuture<WriteResult> writeResult = docRef.update("shipperId", shipperId, "orderStatus", "Shipping");
+        return "Update order with ID: " + orderId + " at: " + writeResult.get().getUpdateTime().toString();
+    }
+
+    public String updatePaymentStatus(String orderId, String paymentStatus)
+            throws InterruptedException, ExecutionException {
+        Firestore db = FirestoreClient.getFirestore();
+        DocumentReference docRef = db.collection("orders").document(orderId);
+        ApiFuture<WriteResult> writeResult = docRef.update("paymentStatus", paymentStatus);
         return "Update order with ID: " + orderId + " at: " + writeResult.get().getUpdateTime().toString();
     }
 
