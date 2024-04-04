@@ -39,7 +39,8 @@ public class OrderService {
         ApiFuture<WriteResult> result = docRef.set(order);
         ApiFuture<WriteResult> writeResult = docRef.update("orderDate", FieldValue.serverTimestamp());
         writeResult.get();
-        return "Created order with ID: " + docRef.getId() + " at: " + result.get().getUpdateTime().toString();
+
+        return Double.valueOf(order.getOrderTotal()).toString();
     }
 
     public String updateShipperId(String orderId, String shipperId) throws InterruptedException, ExecutionException {
