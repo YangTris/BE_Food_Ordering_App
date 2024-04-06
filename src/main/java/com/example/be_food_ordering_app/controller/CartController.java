@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.be_food_ordering_app.entity.Cart;
 import com.example.be_food_ordering_app.entity.CartItem;
 import com.example.be_food_ordering_app.service.CartService;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,8 +21,8 @@ public class CartController {
     CartService cartService;
 
     @GetMapping("/cart/{id}")
-    public ResponseEntity<List<Cart>> getCart(@PathVariable String id) throws Exception {
-        return ResponseEntity.ok(cartService.getCart(id));
+    public ResponseEntity<?> getCart(@PathVariable String id) throws Exception {
+        return ResponseEntity.ok(cartService.getCartId(id));
     }
 
     @GetMapping("/checkCartExist/{userId}")

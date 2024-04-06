@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.be_food_ordering_app.entity.Cart;
 import com.example.be_food_ordering_app.entity.CartItem;
-import com.example.be_food_ordering_app.entity.User;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
@@ -20,12 +19,11 @@ import com.google.firebase.cloud.FirestoreClient;
 @Service
 public class CartService {
 
-    // get all cart items
-    public List<Cart> getCart(String id) throws InterruptedException, ExecutionException {
+    public String getCartId(String id) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = db.collection("carts").whereEqualTo("userId", id).get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-        return documents.stream().map(document -> document.toObject(Cart.class)).toList();
+        return documents.isEmpty() ? "Cart isn't exist" : documents.get(0).toObject(Cart.class).getCartId();
     }
 
     public String createCart(String cartId, CartItem newItem) throws InterruptedException, ExecutionException {
