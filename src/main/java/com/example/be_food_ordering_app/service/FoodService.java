@@ -55,6 +55,9 @@ public class FoodService {
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("foods").document(id);
         food.setId(docRef.getId());
+        if (food.getImgURL() == null)
+            food.setImgURL(
+                    "https://firebasestorage.googleapis.com/v0/b/food-ordering-app-63b1a.appspot.com/o/category_foods.png?alt=media&token=0258300e-a4c3-4ee5-8d2a-8c5383547eb3");
         ApiFuture<WriteResult> result = docRef.set(food);
         ApiFuture<WriteResult> writeResult = docRef.update("timestamp", FieldValue.serverTimestamp());
 
