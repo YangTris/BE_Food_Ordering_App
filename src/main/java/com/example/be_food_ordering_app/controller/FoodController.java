@@ -16,21 +16,27 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.be_food_ordering_app.entity.Food;
 import com.example.be_food_ordering_app.service.FoodService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 public class FoodController {
     @Autowired
     FoodService foodService;
 
-    @GetMapping("/food")
-    public ResponseEntity<List<Food>> getAllFoods() throws Exception {
-        return ResponseEntity.ok(foodService.getAllFoods());
-    }
+    // @GetMapping("/food")
+    // public ResponseEntity<List<Food>> getAllFoods() throws Exception {
+    // return ResponseEntity.ok(foodService.getAllFoods());
+    // }
 
     @GetMapping("/food/{id}")
     public ResponseEntity<Food> getFoodDetails(@PathVariable String id) throws Exception {
         return ResponseEntity.ok(foodService.getFoodDetails(id));
     }
 
+    @GetMapping("/food")
+    public ResponseEntity<List<Food>> searchFood(HttpServletRequest req) throws Exception {
+        return ResponseEntity.ok(foodService.searchFoods(req));
+    }
 
     @PostMapping("/food")
     public ResponseEntity<String> createFood(@RequestBody Food food) throws Exception {
@@ -46,6 +52,5 @@ public class FoodController {
     public ResponseEntity<String> deleteFood(@PathVariable String id) {
         return ResponseEntity.ok(foodService.deleteFood(id));
     }
-
 
 }
