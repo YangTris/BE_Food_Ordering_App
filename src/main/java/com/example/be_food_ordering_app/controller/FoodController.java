@@ -33,12 +33,6 @@ public class FoodController {
         return ResponseEntity.ok(foodService.getFoodDetails(id));
     }
 
-    // @GetMapping("/food")
-    // public ResponseEntity<List<Food>> searchFood(HttpServletRequest req) throws
-    // Exception {
-    // return ResponseEntity.ok(foodService.searchFoods(req));
-    // }
-
     @PostMapping("/food")
     public ResponseEntity<String> createFood(@RequestBody Food food) throws Exception {
         return ResponseEntity.ok(foodService.saveFood(food));

@@ -32,14 +32,27 @@ public class FoodService {
                     "https://firebasestorage.googleapis.com/v0/b/food-ordering-app-63b1a.appspot.com/o/category_foods.png?alt=media&token=0258300e-a4c3-4ee5-8d2a-8c5383547eb3");
         ApiFuture<WriteResult> result = docRef.set(food);
         ApiFuture<WriteResult> writeResult = docRef.update("timestamp", FieldValue.serverTimestamp());
+        writeResult.get();
         return result.get().getUpdateTime().toString();
     }
 
     public List<Food> getFoods(HttpServletRequest req) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         String searchString = req.getParameter("query");
-        ApiFuture<QuerySnapshot> future = db.collection("foods").orderBy("name").startAt(searchString)
-                .endAt(searchString + '~').get();
+        // 0 Asc, 1 Desc
+        // String sortType = req.getParameter("sortType");
+        // double priceRange = Double.parseDouble(req.getParameter("priceRange"));
+
+        ApiFuture<QuerySnapshot> future = db.collection("foods")
+                // .whereGreaterThan("price", priceRange)
+                // .whereLessThan("price", priceRange + 500)
+                // .orderBy("price")
+                // .orderBy("price", sortType.equals("Asc") ? Query.Direction.ASCENDING :
+                // Query.Direction.DESCENDING)
+                .orderBy("name")
+                .startAt(searchString)
+                .endAt(searchString + '~')
+                .get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         List<Food> foods = new ArrayList<>();
         for (QueryDocumentSnapshot document : documents) {
@@ -64,7 +77,7 @@ public class FoodService {
                     "https://firebasestorage.googleapis.com/v0/b/food-ordering-app-63b1a.appspot.com/o/category_foods.png?alt=media&token=0258300e-a4c3-4ee5-8d2a-8c5383547eb3");
         ApiFuture<WriteResult> result = docRef.set(food);
         ApiFuture<WriteResult> writeResult = docRef.update("timestamp", FieldValue.serverTimestamp());
-
+        writeResult.get();
         return result.get().getUpdateTime().toString();
     }
 
@@ -72,20 +85,6 @@ public class FoodService {
         Firestore db = FirestoreClient.getFirestore();
         return db.collection("foods").document(id).get().get().toObject(Food.class);
     }
-
-    // search
-    // public List<Food> searchFoods(HttpServletRequest req) throws InterruptedException, ExecutionException {
-    //     String searchString = req.getParameter("query");
-    //     Firestore db = FirestoreClient.getFirestore();
-    //     ApiFuture<QuerySnapshot> future = db.collection("foods").orderBy("name").startAt(searchString)
-    //             .endAt(searchString + '~').get();
-    //     List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-    //     List<Food> foods = new ArrayList<>();
-    //     for (QueryDocumentSnapshot document : documents) {
-    //         foods.add(document.toObject(Food.class));
-    //     }
-    //     return foods;
-    // }
 
     // sort, filter
     public List<Food> sortFoods(boolean sortType, double priceRange) throws InterruptedException, ExecutionException {
