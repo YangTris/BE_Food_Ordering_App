@@ -35,10 +35,11 @@ public class FoodService {
         return result.get().getUpdateTime().toString();
     }
 
-    public List<Food> getAllFoods() throws InterruptedException, ExecutionException {
+    public List<Food> getFoods(HttpServletRequest req) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
-        // query all documents order by timestamp desc
-        ApiFuture<QuerySnapshot> future = db.collection("foods").orderBy("timestamp", Query.Direction.DESCENDING).get();
+        String searchString = req.getParameter("query");
+        ApiFuture<QuerySnapshot> future = db.collection("foods").orderBy("name").startAt(searchString)
+                .endAt(searchString + '~').get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         List<Food> foods = new ArrayList<>();
         for (QueryDocumentSnapshot document : documents) {
@@ -73,18 +74,18 @@ public class FoodService {
     }
 
     // search
-    public List<Food> searchFoods(HttpServletRequest req) throws InterruptedException, ExecutionException {
-        String searchString = req.getParameter("query");
-        Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = db.collection("foods").orderBy("name").startAt(searchString)
-                .endAt(searchString + '~').get();
-        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-        List<Food> foods = new ArrayList<>();
-        for (QueryDocumentSnapshot document : documents) {
-            foods.add(document.toObject(Food.class));
-        }
-        return foods;
-    }
+    // public List<Food> searchFoods(HttpServletRequest req) throws InterruptedException, ExecutionException {
+    //     String searchString = req.getParameter("query");
+    //     Firestore db = FirestoreClient.getFirestore();
+    //     ApiFuture<QuerySnapshot> future = db.collection("foods").orderBy("name").startAt(searchString)
+    //             .endAt(searchString + '~').get();
+    //     List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+    //     List<Food> foods = new ArrayList<>();
+    //     for (QueryDocumentSnapshot document : documents) {
+    //         foods.add(document.toObject(Food.class));
+    //     }
+    //     return foods;
+    // }
 
     // sort, filter
     public List<Food> sortFoods(boolean sortType, double priceRange) throws InterruptedException, ExecutionException {

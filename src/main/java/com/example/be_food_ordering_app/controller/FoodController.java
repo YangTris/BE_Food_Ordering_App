@@ -23,20 +23,21 @@ public class FoodController {
     @Autowired
     FoodService foodService;
 
-    // @GetMapping("/food")
-    // public ResponseEntity<List<Food>> getAllFoods() throws Exception {
-    // return ResponseEntity.ok(foodService.getAllFoods());
-    // }
+    @GetMapping("/food")
+    public ResponseEntity<List<Food>> getFoods(HttpServletRequest req) throws Exception {
+        return ResponseEntity.ok(foodService.getFoods(req));
+    }
 
     @GetMapping("/food/{id}")
     public ResponseEntity<Food> getFoodDetails(@PathVariable String id) throws Exception {
         return ResponseEntity.ok(foodService.getFoodDetails(id));
     }
 
-    @GetMapping("/food")
-    public ResponseEntity<List<Food>> searchFood(HttpServletRequest req) throws Exception {
-        return ResponseEntity.ok(foodService.searchFoods(req));
-    }
+    // @GetMapping("/food")
+    // public ResponseEntity<List<Food>> searchFood(HttpServletRequest req) throws
+    // Exception {
+    // return ResponseEntity.ok(foodService.searchFoods(req));
+    // }
 
     @PostMapping("/food")
     public ResponseEntity<String> createFood(@RequestBody Food food) throws Exception {
