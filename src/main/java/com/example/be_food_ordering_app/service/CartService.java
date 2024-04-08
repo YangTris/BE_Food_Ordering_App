@@ -23,7 +23,7 @@ public class CartService {
         Firestore db = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = db.collection("carts").whereEqualTo("userId", id).get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-        return documents.isEmpty() ? "Cart isn't exist" : documents.get(0).toObject(Cart.class).getCartId();
+        return documents.isEmpty() ? null : documents.get(0).toObject(Cart.class).getCartId();
     }
 
     public String createCart(String cartId, CartItem newItem) throws InterruptedException, ExecutionException {
