@@ -15,6 +15,9 @@ import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import com.google.cloud.firestore.Query;
 
 @Service
@@ -67,6 +70,34 @@ public class FoodService {
     public Food getFoodDetails(String id) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         return db.collection("foods").document(id).get().get().toObject(Food.class);
+    }
+
+    // search
+    public List<Food> searchFoods(HttpServletRequest req) throws InterruptedException, ExecutionException {
+        String searchString = req.getParameter("query");
+        Firestore db = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = db.collection("foods").orderBy("name").startAt(searchString)
+                .endAt(searchString + '~').get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        List<Food> foods = new ArrayList<>();
+        for (QueryDocumentSnapshot document : documents) {
+            foods.add(document.toObject(Food.class));
+        }
+        return foods;
+    }
+
+    // sort, filter
+    public List<Food> sortFoods(boolean sortType, double priceRange) throws InterruptedException, ExecutionException {
+        Firestore db = FirestoreClient.getFirestore();
+        Query query = db.collection("foods").orderBy("price",
+                sortType ? Query.Direction.ASCENDING : Query.Direction.DESCENDING);
+        ApiFuture<QuerySnapshot> future = query.whereLessThan("price", priceRange).get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        List<Food> foods = new ArrayList<>();
+        for (QueryDocumentSnapshot document : documents) {
+            foods.add(document.toObject(Food.class));
+        }
+        return foods;
     }
 
 }
