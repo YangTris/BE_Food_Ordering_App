@@ -30,9 +30,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserDetails(id));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> Login(@RequestBody User user) throws Exception {
-        return ResponseEntity.ok(userService.loginUser(user));
+    @PostMapping("/login/{phoneNumber}/{password}")
+    public ResponseEntity<String> LoginUser(@PathVariable String phoneNumber,
+            @PathVariable String password)
+            throws Exception {
+        return ResponseEntity.ok(userService.loginUser(phoneNumber, password));
     }
 
     @PostMapping("/user")

@@ -56,16 +56,16 @@ public class UserService {
     }
 
     // login user by phoneNumber and password
-    public String loginUser(User user) throws InterruptedException, ExecutionException {
+    public String loginUser(String phoneNumber, String password) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = db.collection("users").whereEqualTo("phone", user.getPhone())
-                .whereEqualTo("password", user.getPassword()).get();
+        ApiFuture<QuerySnapshot> future = db.collection("users").whereEqualTo("phone", phoneNumber)
+                .whereEqualTo("password", password)
+                .get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         if (documents.isEmpty()) {
-            return "Wrong phone number or password";
-        } else {
-            return "Welcome " + documents.get(0).get("name") + " !";
+            return null;
         }
+        return documents.get(0).getId();
     }
 
     public User getUserDetails(String id) throws InterruptedException, ExecutionException {
