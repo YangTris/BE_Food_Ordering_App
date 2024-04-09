@@ -25,9 +25,9 @@ public class CartController {
         return ResponseEntity.ok(cartService.getCartId(id));
     }
 
-    @GetMapping("/checkCartExist/{userId}")
-    public ResponseEntity<List<CartItem>> checkCartExist(@PathVariable String userId) throws Exception {
-        return ResponseEntity.ok(cartService.checkCartItemExists(userId));
+    @GetMapping("/getUserCart/{userId}")
+    public ResponseEntity<List<CartItem>> getUserCart(@PathVariable String userId) throws Exception {
+        return ResponseEntity.ok(cartService.getUserCart(userId));
     }
 
     @PostMapping("/cart/{cartId}")
@@ -42,8 +42,8 @@ public class CartController {
         return ResponseEntity.ok(cartService.addToCart(cartId, cartItem));
     }
 
-    @DeleteMapping("/cartItem/{cartId}")
-    public ResponseEntity<String> deleteCartItem(@PathVariable String cartId, String foodId) throws Exception {
+    @DeleteMapping("/cart/{cartId}/{foodId}")
+    public ResponseEntity<String> deleteCartItem(@PathVariable String cartId,@PathVariable String foodId) throws Exception {
         return ResponseEntity.ok(cartService.deleteCartItem(cartId, foodId));
     }
 

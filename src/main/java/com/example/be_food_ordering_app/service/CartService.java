@@ -70,7 +70,7 @@ public class CartService {
         return "Item added to cart successfully at: " + writeResult.get().getUpdateTime();
     }
 
-    public List<CartItem> checkCartItemExists(String userId) throws InterruptedException, ExecutionException {
+    public List<CartItem> getUserCart(String userId) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = db.collection("carts").whereEqualTo("userId", userId).get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
