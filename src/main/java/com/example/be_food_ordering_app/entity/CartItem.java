@@ -3,6 +3,7 @@ package com.example.be_food_ordering_app.entity;
 public class CartItem {
     private String foodId;
     private String foodName;
+    private String imgUrl;
     private int quantity;
     private double price;
     private double total;
@@ -10,9 +11,10 @@ public class CartItem {
     public CartItem() {
     }
 
-    public CartItem(String foodId, String foodName, int quantity, double price, double total) {
+    public CartItem(String foodId, String foodName, String imgUrl, int quantity, double price, double total) {
         this.foodId = foodId;
         this.foodName = foodName;
+        this.imgUrl = imgUrl;
         this.quantity = quantity;
         this.price = price;
         this.total = total;
@@ -56,6 +58,14 @@ public class CartItem {
 
     public void setFoodName(String foodName) {
         this.foodName = foodName;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
 }
