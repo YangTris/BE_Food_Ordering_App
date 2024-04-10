@@ -8,12 +8,13 @@ public class User {
     private String phone;
     private String email;
     private String password;
+    private String userImg;
 
     public User() {
     }
 
-    public User(String userId, String name, int roleId, String address, String phone, String email,
-            String password) {
+    public User(String userId, String name, int roleId, String address, String phone, String email, String password,
+            String userImg) {
         this.userId = userId;
         this.name = name;
         this.roleId = roleId;
@@ -21,6 +22,7 @@ public class User {
         this.phone = phone;
         this.email = email;
         this.password = password;
+        this.userImg = userImg;
     }
 
     public String getUserId() {
@@ -77,6 +79,14 @@ public class User {
 
     public void setRoleId(int roleId) {
         this.roleId = roleId;
+    }
+
+    public String getUserImg() {
+        return userImg;
+    }
+
+    public void setUserImg(String userImg) {
+        this.userImg = userImg;
     }
 
 }
