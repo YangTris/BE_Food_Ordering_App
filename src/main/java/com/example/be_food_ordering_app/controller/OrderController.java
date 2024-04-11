@@ -21,6 +21,12 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
+    @GetMapping("/order")
+    public ResponseEntity<List<Order>> getAllOrder()
+            throws InterruptedException, ExecutionException {
+        return ResponseEntity.ok(orderService.getAllOrder());
+    }
+
     @GetMapping("/order/{orderId}")
     public ResponseEntity<Order> getOrder(@PathVariable String orderId)
             throws InterruptedException, ExecutionException {
@@ -38,10 +44,17 @@ public class OrderController {
         return ResponseEntity.ok(orderService.createOrder(cart));
     }
 
-    @PutMapping("/order")
-    public ResponseEntity<String> updateShipperId(@RequestBody Order order)
+    @PutMapping("/order/{orderId}/{shipperId}")
+    public ResponseEntity<String> updateOrderShipper(@PathVariable String orderId,
+            @PathVariable String shipperId)
             throws InterruptedException, ExecutionException {
-        return ResponseEntity.ok(orderService.updateShipperId(order.getOrderId(), order.getShipperId()));
+        return ResponseEntity.ok(orderService.updateOrderShipper(orderId, shipperId));
+    }
+
+    @PutMapping("/order/{orderId}/{status}")
+    public ResponseEntity<String> updateOrderStatus(@PathVariable String orderId, @PathVariable String status)
+            throws InterruptedException, ExecutionException {
+        return ResponseEntity.ok(orderService.updateOrderStatus(orderId, status));
     }
 
 }

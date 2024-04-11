@@ -4,33 +4,42 @@ import java.util.Date;
 
 public class Order {
     private String orderId;
+
     private String userId;
+    private String userPhone;
+    private String userName;
+    private String userAddress;
+
     private String shipperId;
+    private String shipperName;
+
     private Date orderDate;
     private String orderStatus;
     private double orderTotal;
-    private String userAddress;
     private String merchantAdress;
-    private String userPhone;
+
     private String paymentMethod;
     private String paymentStatus;
+
     private Cart cart;
 
     public Order() {
     }
 
-    public Order(String orderId, String userId, String shipperId, String userAddress, String merchantAdress,
-            String userPhone, Date orderDate, String orderStatus, double orderTotal, String paymentMethod,
-            String paymentStatus, Cart cart) {
+    public Order(String orderId, String userId, String userPhone, String userName, String userAddress, String shipperId,
+            String shipperName, Date orderDate, String orderStatus, double orderTotal, String merchantAdress,
+            String paymentMethod, String paymentStatus, Cart cart) {
         this.orderId = orderId;
         this.userId = userId;
-        this.shipperId = shipperId;
-        this.userAddress = userAddress;
-        this.merchantAdress = merchantAdress;
         this.userPhone = userPhone;
+        this.userName = userName;
+        this.userAddress = userAddress;
+        this.shipperId = shipperId;
+        this.shipperName = shipperName;
         this.orderDate = orderDate;
         this.orderStatus = orderStatus;
         this.orderTotal = orderTotal;
+        this.merchantAdress = merchantAdress;
         this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
         this.cart = cart;
@@ -130,6 +139,22 @@ public class Order {
 
     public void setOrderTotal(double orderTotal) {
         this.orderTotal = orderTotal;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getShipperName() {
+        return shipperName;
+    }
+
+    public void setShipperName(String shipperName) {
+        this.shipperName = shipperName;
     }
 
 }

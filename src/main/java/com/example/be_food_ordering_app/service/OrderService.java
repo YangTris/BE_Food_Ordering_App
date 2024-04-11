@@ -35,6 +35,7 @@ public class OrderService {
         ApiFuture<QuerySnapshot> future = db.collection("users").whereEqualTo("userId", cart.getUserId()).get();
         order.setUserPhone(future.get().toObjects(User.class).get(0).getPhone());
         order.setUserAddress(future.get().toObjects(User.class).get(0).getAddress());
+        order.setUserName(future.get().toObjects(User.class).get(0).getName());
 
         ApiFuture<WriteResult> result = docRef.set(order);
         ApiFuture<WriteResult> writeResult = docRef.update("orderDate", FieldValue.serverTimestamp());
@@ -43,11 +44,22 @@ public class OrderService {
         return Double.valueOf(order.getOrderTotal()).toString();
     }
 
-    public String updateShipperId(String orderId, String shipperId) throws InterruptedException, ExecutionException {
+    public String updateOrderShipper(String orderId, String shipperId) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("orders").document(orderId);
-        ApiFuture<WriteResult> writeResult = docRef.update("shipperId", shipperId, "orderStatus", "Shipping");
-        return "Update order with ID: " + orderId + " at: " + writeResult.get().getUpdateTime().toString();
+        ApiFuture<QuerySnapshot> future = db.collection("users").whereEqualTo("userId", shipperId).get();
+        String shipperName = future.get().toObjects(User.class).get(0).getName();
+
+        ApiFuture<WriteResult> writeResult = docRef.update("shipperId", shipperId, "shipperName", shipperName);
+        return "Update Shipper for Order with ID: " + orderId + " at: " + writeResult.get().getUpdateTime().toString();
+    }
+
+    public String updateOrderStatus(String orderId, String orderStatus)
+            throws InterruptedException, ExecutionException {
+        Firestore db = FirestoreClient.getFirestore();
+        DocumentReference docRef = db.collection("orders").document(orderId);
+        ApiFuture<WriteResult> writeResult = docRef.update("orderStatus", orderStatus);
+        return "Update order status with ID: " + orderId + " at: " + writeResult.get().getUpdateTime().toString();
     }
 
     public String updatePaymentStatus(String orderId, String paymentStatus)
@@ -55,7 +67,8 @@ public class OrderService {
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("orders").document(orderId);
         ApiFuture<WriteResult> writeResult = docRef.update("paymentStatus", paymentStatus);
-        return "Update order with ID: " + orderId + " at: " + writeResult.get().getUpdateTime().toString();
+        return "Update Payment status order with ID: " + orderId + " at: "
+                + writeResult.get().getUpdateTime().toString();
     }
 
     public Order getOrder(String orderId) throws InterruptedException, ExecutionException {
@@ -68,6 +81,13 @@ public class OrderService {
     public List<Order> getOrderByUserId(String userId) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = db.collection("orders").whereEqualTo("userId", userId).get();
+        return future.get().toObjects(Order.class);
+    }
+
+    // list all order
+    public List<Order> getAllOrder() throws InterruptedException, ExecutionException {
+        Firestore db = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = db.collection("orders").get();
         return future.get().toObjects(Order.class);
     }
 
