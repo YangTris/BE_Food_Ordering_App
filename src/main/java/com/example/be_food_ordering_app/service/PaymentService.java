@@ -30,7 +30,7 @@ public class PaymentService {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
-        Double amount = Double.parseDouble(req.getParameter("amount")) * 100;
+        long amount = Integer.parseInt(req.getParameter("amount")) * 100;
 
         String bankCode = req.getParameter("bankCode");
 
