@@ -38,6 +38,7 @@ public class OrderService {
         order.setUserName(future.get().toObjects(User.class).get(0).getName());
 
         ApiFuture<WriteResult> result = docRef.set(order);
+        result.get();
         ApiFuture<WriteResult> writeResult = docRef.update("orderDate", FieldValue.serverTimestamp());
         writeResult.get();
 

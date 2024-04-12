@@ -3,7 +3,7 @@ package com.example.be_food_ordering_app.entity;
 public class User {
     private String userId;
     private String name;
-    private int roleId; // 0 is user 1 is shipper 2 is staff 3 is admin
+    private int roleId; // 0 is user 1 is shipper 2 is admin
     private String address;
     private String phone;
     private String email;

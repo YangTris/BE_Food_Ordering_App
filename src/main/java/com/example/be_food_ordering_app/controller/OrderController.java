@@ -34,7 +34,7 @@ public class OrderController {
     }
 
     @GetMapping("/order/orderhistory/{userId}")
-    public ResponseEntity<List<Order>> getAllOrder(@PathVariable String userId)
+    public ResponseEntity<List<Order>> getOrderHistoryByUserId(@PathVariable String userId)
             throws InterruptedException, ExecutionException {
         return ResponseEntity.ok(orderService.getOrderByUserId(userId));
     }
