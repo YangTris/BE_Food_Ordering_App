@@ -45,9 +45,16 @@ public class OrderController {
     }
 
     @PutMapping("/order/{orderId}/{shipperId}/{status}")
-    public ResponseEntity<String> updateOrderStatus(@PathVariable String orderId,@PathVariable String shipperId, @PathVariable String status)
+    public ResponseEntity<String> updateOrderStatus(@PathVariable String orderId, @PathVariable String shipperId,
+            @PathVariable String status)
             throws InterruptedException, ExecutionException {
-        return ResponseEntity.ok(orderService.updateOrderStatus(orderId,shipperId,status));
+        return ResponseEntity.ok(orderService.updateOrderStatus(orderId, shipperId, status));
+    }
+
+    @PutMapping("/order/{orderId}/{status}")
+    public ResponseEntity<String> updatePaymentStatus(@PathVariable String orderId, @PathVariable String status)
+            throws InterruptedException, ExecutionException {
+        return ResponseEntity.ok(orderService.updatePaymentStatus(orderId, status));
     }
 
 }
