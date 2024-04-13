@@ -40,7 +40,7 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public ResponseEntity<String> createOrder(@RequestBody Cart cart) throws InterruptedException, ExecutionException {
+    public ResponseEntity<Order> createOrder(@RequestBody Cart cart) throws InterruptedException, ExecutionException {
         return ResponseEntity.ok(orderService.createOrder(cart));
     }
 

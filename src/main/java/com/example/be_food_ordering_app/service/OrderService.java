@@ -18,7 +18,7 @@ import com.google.firebase.cloud.FirestoreClient;
 
 @Service
 public class OrderService {
-    public String createOrder(Cart cart) throws InterruptedException, ExecutionException {
+    public Order createOrder(Cart cart) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("orders").document();
 
@@ -42,7 +42,7 @@ public class OrderService {
         ApiFuture<WriteResult> writeResult = docRef.update("orderDate", FieldValue.serverTimestamp());
         writeResult.get();
 
-        return Double.valueOf(order.getOrderTotal()).toString();
+        return order;
     }
 
     public String updateOrderStatus(String orderId, String shipperId, String orderStatus) throws InterruptedException, ExecutionException {
