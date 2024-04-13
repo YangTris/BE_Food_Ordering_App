@@ -50,6 +50,11 @@ public class UserService {
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("users").document();
         user.setUserId(docRef.getId());
+        if (user.getUserImg() == null) {
+            user.setUserImg(
+                    "https://firebasestorage.googleapis.com/v0/b/food-ordering-app-63b1a.appspot.com/o/users%2F415d35b1-3162-424e-b05d-5dba53c65696?alt=media&token=9e452244-0983-4c92-b34a-831510fb67f3");
+        }
+
         ApiFuture<WriteResult> result = docRef.set(user);
 
         return "Saved user with ID: " + docRef.getId();
