@@ -15,12 +15,19 @@ import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @Service
 public class UserService {
 
-    public List<User> getAllUsers() throws InterruptedException, ExecutionException {
+    public List<User> getAllUsers(HttpServletRequest req) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = db.collection("users").get();
+        String searchString = req.getParameter("query");
+        ApiFuture<QuerySnapshot> future = db.collection("users")
+                .orderBy("phone")
+                .startAt(searchString)
+                .endAt(searchString + '~')
+                .get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         List<User> users = documents.stream().map(document -> document.toObject(User.class)).toList();
 
@@ -31,6 +38,16 @@ public class UserService {
     public boolean checkPhoneNumber(String phone) {
         String pattern = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}";
         return phone.matches(pattern);
+    }
+
+    public boolean checkPassword(String password) {
+        String pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
+        return password.matches(pattern);
+    }
+
+    public boolean checkGmail(String gmail) {
+        String pattern = "^[a-zA-Z0-9+_.-]+@gmail.com$";
+        return gmail.matches(pattern);
     }
 
     public boolean checkUniquePhoneNumber(String phone) throws InterruptedException, ExecutionException {
@@ -47,6 +64,12 @@ public class UserService {
         if (!checkUniquePhoneNumber(user.getPhone())) {
             return "Phone number already exists";
         }
+        if (!checkPassword(user.getPassword())) {
+            return "Password must contain at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character";
+        }
+        if (!checkGmail(user.getEmail())) {
+            return "Email must coitain @gmail.com";
+        }
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("users").document();
         user.setUserId(docRef.getId());
@@ -56,8 +79,8 @@ public class UserService {
         }
 
         ApiFuture<WriteResult> result = docRef.set(user);
-
-        return "Saved user with ID: " + docRef.getId();
+        result.get();
+        return "Created account " + user.getPhone();
     }
 
     // login user by phoneNumber and password
@@ -90,6 +113,7 @@ public class UserService {
         DocumentReference docRef = db.collection("users").document(id);
         user.setUserId(docRef.getId());
         ApiFuture<WriteResult> result = docRef.set(user);
+        result.get();
         return "Updated user with ID: " + docRef.getId();
     }
 

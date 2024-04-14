@@ -15,14 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.be_food_ordering_app.entity.User;
 import com.example.be_food_ordering_app.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 public class UserController {
     @Autowired
     UserService userService;
 
     @GetMapping("/user")
-    public ResponseEntity<List<User>> getAllUsers() throws Exception {
-        return ResponseEntity.ok(userService.getAllUsers());
+    public ResponseEntity<List<User>> getAllUsers(HttpServletRequest req) throws Exception {
+        return ResponseEntity.ok(userService.getAllUsers(req));
     }
 
     @GetMapping("/user/{id}")

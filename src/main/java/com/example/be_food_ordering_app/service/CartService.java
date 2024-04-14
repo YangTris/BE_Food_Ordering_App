@@ -36,7 +36,7 @@ public class CartService {
         cart.getCartItems().forEach(item -> item.setTotal(item.getQuantity() * item.getPrice()));
 
         double totalPrice = calculateTotalPrice(cart);
-        cart.setTotalPrice(totalPrice);
+        cart.setTotalPrice(totalPrice); 
 
         ApiFuture<WriteResult> result = docRef.set(cart);
         return "Item added to cart successfully at: " + result.get().getUpdateTime();
