@@ -35,7 +35,7 @@ public class FoodController {
 
     @PostMapping("/food")
     public ResponseEntity<String> createFood(@RequestBody Food food) throws Exception {
-        return ResponseEntity.ok(foodService.saveFood(food));
+        return ResponseEntity.ok(foodService.createFood(food));
     }
 
     @PutMapping("/food/{id}")

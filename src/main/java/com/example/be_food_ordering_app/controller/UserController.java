@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping("/user")
     public ResponseEntity<List<User>> getAllUsers(HttpServletRequest req) throws Exception {
-        return ResponseEntity.ok(userService.getAllUsers(req));
+        return ResponseEntity.ok(userService.getUsers(req));
     }
 
     @GetMapping("/user/{id}")

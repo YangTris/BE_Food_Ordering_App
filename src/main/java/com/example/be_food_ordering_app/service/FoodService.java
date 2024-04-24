@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.be_food_ordering_app.entity.Food;
 import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.FieldValue;
 import com.google.cloud.firestore.Firestore;
@@ -23,7 +24,7 @@ import com.google.cloud.firestore.Query;
 @Service
 public class FoodService {
 
-    public String saveFood(Food food) throws InterruptedException, ExecutionException {
+    public String createFood(Food food) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("foods").document();
         food.setId(docRef.getId());
@@ -39,6 +40,10 @@ public class FoodService {
     public List<Food> getFoods(HttpServletRequest req) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         String searchString = req.getParameter("query");
+        String cap = "";
+        if (searchString != "") {
+            cap = searchString.substring(0, 1).toUpperCase() + searchString.substring(1);
+        }
         // 0 Asc, 1 Desc
         // String sortType = req.getParameter("sortType");
         // double priceRange = Double.parseDouble(req.getParameter("priceRange"));
@@ -50,8 +55,8 @@ public class FoodService {
                 // .orderBy("price", sortType.equals("Asc") ? Query.Direction.ASCENDING :
                 // Query.Direction.DESCENDING)
                 .orderBy("name")
-                .startAt(searchString)
-                .endAt(searchString + '~')
+                .startAt(cap)
+                .endAt(cap + '~')
                 .get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         List<Food> foods = new ArrayList<>();

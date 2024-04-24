@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @Service
 public class UserService {
 
-    public List<User> getAllUsers(HttpServletRequest req) throws InterruptedException, ExecutionException {
+    public List<User> getUsers(HttpServletRequest req) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         String searchString = req.getParameter("query");
         ApiFuture<QuerySnapshot> future = db.collection("users")
